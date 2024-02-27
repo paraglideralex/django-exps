@@ -6,20 +6,67 @@
 </head>
 <body>
     
-    <h1>Добро пожаловать на домашнюю страницу!</h1>
+    <h5>Это имитатор калькулятора</h5>
     
-    <input type="number" name="inputValue1" id="inputValue1"><br><br>
-    <input type="number" name="inputValue2" id="inputValue2"><br><br>
+    <input type=number step=any name="inputValue1" id="inputValue1"><br><br>
+    <input type=number step=any name="inputValue2" id="inputValue2"><br><br>
     
     <button id="sumButton">Посчитать сумму</button>
     
     <div id="response"></div>
+
+    <div id="plotContainer"></div>
+
+    <script>
+    document.getElementById('sumButton').addEventListener('click', function() {
+        // Ваш существующий код для отправки AJAX-запроса
+
+        // Добавьте следующий код для загрузки и отображения графика
+        fetch('/plot/')
+            .then(response => response.blob())
+            .then(blob => {
+                const url = URL.createObjectURL(blob);
+                const img = document.createElement('img');
+                img.src = url;
+                document.getElementById('plotContainer').appendChild(img);
+            });
+    });
+    </script>
+
+    <!--
+    1. document.getElementById('calculateButton').addEventListener('click', function() {...});:
+    Этот код добавляет слушатель события на кнопку с идентификатором calculateButton. Когда кнопка будет нажата,
+    выполнится функция внутри addEventListener.
+
+    2. fetch('/plot/'): Этот код делает AJAX-запрос на URL /plot/, который должен вернуть изображение графика
+    в формате blob.
+
+    3. .then(response => response.blob()): После получения ответа от сервера, этот код преобразует ответ
+    в формат blob (бинарные данные).
+
+    4. .then(blob => {...});: После успешного получения бинарных данных, выполняется функция, которая
+    создает изображение и добавляет его на страницу.
+
+    5. const url = URL.createObjectURL(blob);: Создается URL для объекта blob, который будет использоваться
+    как источник изображения.
+
+    6. const img = document.createElement('img');: Создается элемент <img>, который будет отображать изображение.
+
+    7. img.src = url;: Устанавливается источник изображения для элемента <img>.
+
+    8. document.getElementById('plotContainer').appendChild(img);:
+    Изображение добавляется в контейнер с идентификатором plotContainer на странице, чтобы пользователь мог увидеть график.
+
+    Таким образом, при нажатии на кнопку "Посчитать сумму", происходит загрузка графика
+    через AJAX-запрос и отображение его на странице в контейнере plotContainer.
+
+    -->
     
     <script>
         $(document).ready(function() {
             $('#sumButton').click(function() {
-                var value1 = parseInt($('#inputValue1').val());
-                var value2 = parseInt($('#inputValue2').val());
+                var value1 = $('#inputValue1').val();
+                var value2 = $('#inputValue2').val();
                 $.ajax({
                     url: '/calculate_sum/',
                     type: 'POST',
@@ -34,17 +81,6 @@
             });
         });
     </script>
-	
-	<script>
-	document.getElementById('calculateButton').addEventListener('click', function() {
-    var value1 = document.getElementById('inputValue1').value;
-    var value2 = document.getElementById('inputValue2').value;
 
-    // Проверка, что введенные значения являются числами
-    if (isNaN(value1) || isNaN(value2)) {
-        alert('Пожалуйста, введите числовые значения');
-        return;
-    }
-	</script>
 </body>
 </html>
