@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Домашняя страница</title>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+<body>
+    
+    <h1>Добро пожаловать на домашнюю страницу!</h1>
+    
+    <input type="number" name="inputValue1" id="inputValue1"><br><br>
+    <input type="number" name="inputValue2" id="inputValue2"><br><br>
+    
+    <button id="sumButton">Посчитать сумму</button>
+    
+    <div id="response"></div>
+    
+    <script>
+        $(document).ready(function() {
+            $('#sumButton').click(function() {
+                var value1 = parseInt($('#inputValue1').val());
+                var value2 = parseInt($('#inputValue2').val());
+                $.ajax({
+                    url: '/calculate_sum/',
+                    type: 'POST',
+                    data: {
+                        'value1': value1,
+                        'value2': value2
+                    },
+                    success: function(response) {
+                        $('#response').text('Сумма: ' + response.result);
+                    }
+                });
+            });
+        });
+    </script>
+	
+	<script>
+	document.getElementById('calculateButton').addEventListener('click', function() {
+    var value1 = document.getElementById('inputValue1').value;
+    var value2 = document.getElementById('inputValue2').value;
+
+    // Проверка, что введенные значения являются числами
+    if (isNaN(value1) || isNaN(value2)) {
+        alert('Пожалуйста, введите числовые значения');
+        return;
+    }
+	</script>
+</body>
+</html>
